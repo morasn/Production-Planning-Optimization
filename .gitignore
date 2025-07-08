@@ -2,3 +2,5 @@ OLD
 Sent
 __pycache__
 Manual.pdf
+.git
+.gitignore

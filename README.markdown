@@ -78,9 +78,9 @@ The Production Optimizer uses an Integer Linear Programming (ILP) model to maxim
 
 Maximize total profit, accounting for revenue, penalty costs for unmet demand, and maintenance costs:
 
-$$
+$
 \max Z = \sum_{p \in P} \left[ \text{Profit}_p \cdot \sum_{m \in M} \sum_{b \in B} x_{p,m,b} \cdot \text{BatchSize}_{p,b} - \text{Penalty}_p \cdot u_p \right] - \sum_{m \in M} \sum_{p \in P} \sum_{b \in B} \text{Maintenance}_m \cdot y_{p,m,b}
-$$
+$
 
 Where:
 - $P$: Set of products.
@@ -95,33 +95,33 @@ Where:
 
 1. **Machine Assignment**:
    Each machine can produce at most one product per day:
-   $$
+   $
    \sum_{p \in P} \sum_{b \in B} y_{p,m,b} \leq 1 \quad \forall m \in M
-   $$
+   $
 
 2. **Machine Time**:
    Total time (production + setup) on each machine must not exceed available hours:
-   $$
+   $
    \sum_{p \in P} \sum_{b \in B} \left( \frac{x_{p,m,b} \cdot \text{BatchSize}_{p,b}}{\text{Rate}_{p,m}} + \text{SetupTime}_p \cdot y_{p,m,b} \right) \leq \text{AvailableHours}_m \quad \forall m \in M
-   $$
+   $
 
 3. **Batch Type Exclusivity**:
    For each product-machine pair, at most one batch type (min or max) can be used:
-   $$
+   $
    y_{p,m,\text{min}} + y_{p,m,\text{max}} \leq 1 \quad \forall (p,m) \in \text{Rates}
-   $$
+   $
 
 4. **Batch Activation**:
    Batches are only produced if the corresponding $y$ variable is 1:
-   $$
+   $
    x_{p,m,b} \leq 50000 \cdot y_{p,m,b} \quad \forall p \in P, m \in M, b \in B
-   $$
+   $
 
 5. **Demand Satisfaction**:
    Production plus unmet demand equals total demand:
-   $$
+   $
    \sum_{m \in M} \sum_{b \in B} x_{p,m,b} \cdot \text{BatchSize}_{p,b} + u_p = \text{Demand}_p \quad \forall p \in P
-   $$
+   $
 
 ## Prerequisites
 
